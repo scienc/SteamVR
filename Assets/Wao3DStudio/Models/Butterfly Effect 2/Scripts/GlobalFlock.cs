@@ -2,43 +2,87 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GlobalFlock : MonoBehaviour {
-	public GameObject[] butterflyPrefab;
-	public int areaSize = 3;
-	public float butrerSize = 0.5f;
-	public int numButterflies = 15;
-	public GameObject[] allButterfly;
-	//public GameObject goalPosGameobject;
-	public Vector3 goalPos = Vector3.zero;
+public class GlobalFlock : MonoBehaviour
+{
+    public GameObject[] butterflyPrefab;
+    public int areaSize = 3;
+    public float butrerSize = 0.5f;
+    public int numButterflies = 15;
+    public Flock[] allButterfly;
+    //public GameObject goalPosGameobject;
+    public Vector3 goalPos = Vector3.zero;
 
-	// Use this for initialization
-	void Start ()
+    private List<int> deadButterList = new List<int>();
+    private int deadMin = 1;
+    private int spawnNum = 5;
+    // Use this for initialization
+    void Start()
+    {
+        deadButterList.Clear();
+        allButterfly = new Flock[numButterflies];
+        goalPos = gameObject.transform.position;
 
-	{
-		allButterfly = new GameObject[numButterflies];
-		goalPos = gameObject.transform.position;
+        for (int i = 0; i < numButterflies; i++)
+        {
+            Vector3 pos = gameObject.transform.position + new Vector3(Random.Range(-areaSize, areaSize),
+                Random.Range(-areaSize, areaSize),
+                -areaSize);
 
-		for (int i = 0; i < numButterflies; i++) {
-			Vector3 pos = gameObject.transform.position + new Vector3 (Random.Range (-areaSize, areaSize),
-				Random.Range (-areaSize, areaSize),
-				Random.Range (-areaSize, areaSize));
+            int rdm = Random.Range(0, butterflyPrefab.Length);
+            var obj = (GameObject)Instantiate(butterflyPrefab[rdm], pos, Quaternion.identity);
+            allButterfly[i] = obj.GetComponent<Flock>();
+            allButterfly[i].transform.parent = gameObject.transform;
+            allButterfly[i].transform.localScale = Vector3.one * butrerSize;
+            allButterfly[i].Init(this, i);
+            allButterfly[i].delegateDestoryFlock = DeadFlock;
+        }
+        InvokeRepeating("SpawnFlock", 0.0f, 1.0f);
+    }
 
-			int rdm = Random.Range (0, butterflyPrefab.Length);
-			allButterfly[i] = (GameObject) Instantiate (butterflyPrefab[rdm], pos, Quaternion.identity);
-			allButterfly[i].transform.parent = gameObject.transform;
-			allButterfly[i].transform.localScale = Vector3.one * butrerSize;
-			//allButterfly[i].transform.position=new Vector3(0,0,0);
-			//allButterfly[i].GetComponent<Flock>().startUpdate=true;
-		}
-	}
+    private void DeadFlock(int index)
+    {
+        if (deadButterList.Contains(index))
+            return;
+        deadButterList.Add(index);
+    }
 
-	// Update is called once per frame
-	void Update () {
-		if (Random.Range (0, 10000) < 50) {
-			goalPos = new Vector3 (Random.Range (-areaSize, areaSize),
-				Random.Range (-areaSize, areaSize),
-				Random.Range (-areaSize, areaSize));
-		}
+    private void SpawnFlock()
+    {
+        if (deadButterList.Count == 0)
+        {
+            return;
+        }
+        if (deadButterList.Count >= allButterfly.Length - deadMin)
+        {
+            int spawnIndex = 0;
+            for (int i = 0; i < deadButterList.Count; i++)
+            {
+                allButterfly[deadButterList[i]].Play(true);
+                deadButterList.RemoveAt(i);
+                i--;
+                spawnIndex++;
+                if (spawnIndex >= spawnNum)
+                {
+                    break;
+                }
+            }
+        }
+        else
+        {
+            allButterfly[deadButterList[0]].Play(true);
+            deadButterList.RemoveAt(0);
+        }
+    }
 
-	}
+    // Update is called once per frame
+    // void Update()
+    // {
+    //     if (Random.Range(0, 10000) < 50)
+    //     {
+    //         goalPos = new Vector3(Random.Range(-areaSize, areaSize),
+    //             Random.Range(-areaSize, areaSize),
+    //             Random.Range(-areaSize, areaSize));
+    //     }
+    // }
+
 }
