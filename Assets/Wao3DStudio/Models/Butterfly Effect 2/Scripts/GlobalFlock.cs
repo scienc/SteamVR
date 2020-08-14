@@ -5,7 +5,7 @@ using UnityEngine;
 public class GlobalFlock : MonoBehaviour
 {
     public GameObject[] butterflyPrefab;
-    public int areaSize = 3;
+    public float areaSize = 3;
     public float butrerSize = 0.5f;
     public int numButterflies = 15;
     public Flock[] allButterfly;
