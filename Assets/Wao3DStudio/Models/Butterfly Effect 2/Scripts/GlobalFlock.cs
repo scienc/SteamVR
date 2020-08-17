@@ -15,6 +15,8 @@ public class GlobalFlock : MonoBehaviour
     private List<int> deadButterList = new List<int>();
     private int deadMin = 1;
     private int spawnNum = 5;
+    public int destoryDistanc = 50;
+    public Transform trackTrans;
     // Use this for initialization
     void Start()
     {
@@ -75,28 +77,41 @@ public class GlobalFlock : MonoBehaviour
     }
 
     // Update is called once per frame
+    float expoleDistance = 0.0f;
+    Vector2 touchPos = Vector2.zero;
+    Vector3 currentTrack = Vector3.zero;
+    Vector3 tempPos = Vector3.zero;
+    public Camera mCamera;
     void Update()
     {
-        // if (Random.Range(0, 10000) < 50)
-        // {
-        //     goalPos = new Vector3(Random.Range(-areaSize, areaSize),
-        //         Random.Range(-areaSize, areaSize),
-        //         Random.Range(-areaSize, areaSize));
-        // }
-        if (Input.GetMouseButtonDown(1))
+        if (currentTrack != null && currentTrack != trackTrans.position)
         {
-            Vector3 wp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 touchPos = new Vector2(wp.x, wp.y);
-            Debug.Log("touchPos " + touchPos);
-            float distanc = 0.0f;
+            currentTrack = trackTrans.position;
+            tempPos = mCamera.WorldToScreenPoint(currentTrack);
+            touchPos = new Vector2(tempPos.x, tempPos.y);
             for (int i = 0; i < allButterfly.Length; i++)
             {
-                Debug.Log(allButterfly[i].isDestory + "  " + allButterfly[i].isReset);
                 if (allButterfly[i].isDestory || allButterfly[i].isReset)
                     continue;
-                distanc = Mathf.Abs(Vector2.Distance(touchPos, allButterfly[i].GetScreenPos()));
-                Debug.Log("distance : " + distanc);
-                if (distanc > 10)
+                expoleDistance = Mathf.Abs(Vector2.Distance(touchPos, allButterfly[i].GetScreenPos()));
+                if (expoleDistance > destoryDistanc)
+                {
+                    continue;
+                }
+                allButterfly[i].Destory();
+            }
+        }
+
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            touchPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+            for (int i = 0; i < allButterfly.Length; i++)
+            {
+                if (allButterfly[i].isDestory || allButterfly[i].isReset)
+                    continue;
+                expoleDistance = Mathf.Abs(Vector2.Distance(touchPos, allButterfly[i].GetScreenPos()));
+                if (expoleDistance > destoryDistanc)
                 {
                     continue;
                 }
