@@ -83,11 +83,11 @@ public class GlobalFlock : MonoBehaviour
         //         Random.Range(-areaSize, areaSize),
         //         Random.Range(-areaSize, areaSize));
         // }
-        if (Input.touchCount == 1)
+        if (Input.GetMouseButtonDown(1))
         {
-            Vector3 wp = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+            Vector3 wp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 touchPos = new Vector2(wp.x, wp.y);
-            //Debug.Log("touchPos " + touchPos);
+            Debug.Log("touchPos " + touchPos);
             float distanc = 0.0f;
             for (int i = 0; i < allButterfly.Length; i++)
             {
