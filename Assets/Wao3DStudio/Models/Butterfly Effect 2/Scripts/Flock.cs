@@ -17,6 +17,14 @@ public class Flock : MonoBehaviour
     public bool isReset = false;
     private int createIndex = -1;
     public System.Action<int> delegateDestoryFlock;
+
+    private Camera mCamera;
+
+    public void Start()
+    {
+        mCamera = Camera.main;
+    }
+
     public void Init(GlobalFlock gf, int index)
     {
         GlobalFlock = gf;
@@ -42,7 +50,7 @@ public class Flock : MonoBehaviour
             this.isReset = true;
             Invoke("BeginTrigger", 1.0f);
         }
-        
+
         this.gameObject.SetActive(true);
         parentPos = GlobalFlock.transform.position;
         speed = Random.Range(1f, 2);
@@ -50,21 +58,22 @@ public class Flock : MonoBehaviour
         isDestory = false;
     }
 
-    private void BeginTrigger(){
+    private void BeginTrigger()
+    {
         this.isReset = false;
     }
 
     private void OnTriggerEnter(Collider collider)
     {
-        if(this.isReset)
-            return;
-        var tag = collider.tag;
-        if (tag.Equals("Tracker") && !isDestory)
-        {
-            Destory();
-        }
+        // if(this.isReset)
+        //     return;
+        // var tag = collider.tag;
+        // if (tag.Equals("Tracker") && !isDestory)
+        // {
+        //     Destory();
+        // }
     }
-    private void Destory()
+    public void Destory()
     {
         PlayDead();
         if (delegateDestoryFlock != null)
@@ -102,6 +111,7 @@ public class Flock : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation,
                 Quaternion.LookRotation(direction), rotationSpeed * Time.deltaTime);
             speed = Random.Range(0.5f, 1);
+            //Debug.Log("Buffer screen pos " + GetScreenPos());
         }
         else
         {
@@ -110,9 +120,7 @@ public class Flock : MonoBehaviour
                 ApplyRules();
             }
         }
-
         transform.Translate(0, 0, Time.deltaTime * speed);
-        //}		 
     }
     void ApplyRules()
     {
@@ -153,5 +161,12 @@ public class Flock : MonoBehaviour
                     Quaternion.LookRotation(direction),
                     rotationSpeed * Time.deltaTime);
         }
+    }
+
+    Vector3 screenPoint3 = Vector3.zero;
+    public Vector2 GetScreenPos()
+    {
+        screenPoint3 = mCamera.WorldToScreenPoint(this.transform.position);
+        return new Vector2(screenPoint3.x, screenPoint3.y);
     }
 }
