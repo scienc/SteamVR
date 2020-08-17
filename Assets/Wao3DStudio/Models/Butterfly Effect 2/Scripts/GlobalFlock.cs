@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Valve.VR;
 
 public class GlobalFlock : MonoBehaviour
 {
@@ -101,23 +102,5 @@ public class GlobalFlock : MonoBehaviour
                 allButterfly[i].Destory();
             }
         }
-
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            touchPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-            for (int i = 0; i < allButterfly.Length; i++)
-            {
-                if (allButterfly[i].isDestory || allButterfly[i].isReset)
-                    continue;
-                expoleDistance = Mathf.Abs(Vector2.Distance(touchPos, allButterfly[i].GetScreenPos()));
-                if (expoleDistance > destoryDistanc)
-                {
-                    continue;
-                }
-                allButterfly[i].Destory();
-            }
-        }
     }
-
 }

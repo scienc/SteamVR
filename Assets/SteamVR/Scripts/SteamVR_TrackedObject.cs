@@ -77,6 +77,7 @@ namespace Valve.VR
 
         SteamVR_TrackedObject()
         {
+
             newPosesAction = SteamVR_Events.NewPosesAction(OnNewPoses);
         }
 
