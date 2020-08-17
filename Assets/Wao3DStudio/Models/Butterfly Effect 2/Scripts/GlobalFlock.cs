@@ -16,8 +16,6 @@ public class GlobalFlock : MonoBehaviour
     private List<int> deadButterList = new List<int>();
     private int deadMin = 1;
     private int spawnNum = 5;
-    public int destoryDistanc = 50;
-    public Transform trackTrans;
     // Use this for initialization
     void Start()
     {
@@ -35,8 +33,9 @@ public class GlobalFlock : MonoBehaviour
             var obj = (GameObject)Instantiate(butterflyPrefab[rdm], pos, Quaternion.identity);
             allButterfly[i] = obj.GetComponent<Flock>();
             allButterfly[i].transform.parent = gameObject.transform;
+            allButterfly[i].transform.localPosition = Vector3.zero;
             allButterfly[i].transform.localScale = Vector3.one * butrerSize;
-            allButterfly[i].Init(this, i);
+            allButterfly[i].Init(this, i, butrerSize);
             allButterfly[i].delegateDestoryFlock = DeadFlock;
         }
         InvokeRepeating("SpawnFlock", 0.0f, 1.0f);
@@ -74,33 +73,6 @@ public class GlobalFlock : MonoBehaviour
         {
             allButterfly[deadButterList[0]].Play(true);
             deadButterList.RemoveAt(0);
-        }
-    }
-
-    // Update is called once per frame
-    float expoleDistance = 0.0f;
-    Vector2 touchPos = Vector2.zero;
-    Vector3 currentTrack = Vector3.zero;
-    Vector3 tempPos = Vector3.zero;
-    public Camera mCamera;
-    void Update()
-    {
-        if (currentTrack != null && currentTrack != trackTrans.position)
-        {
-            currentTrack = trackTrans.position;
-            tempPos = mCamera.WorldToScreenPoint(currentTrack);
-            touchPos = new Vector2(tempPos.x, tempPos.y);
-            for (int i = 0; i < allButterfly.Length; i++)
-            {
-                if (allButterfly[i].isDestory || allButterfly[i].isReset)
-                    continue;
-                expoleDistance = Mathf.Abs(Vector2.Distance(touchPos, allButterfly[i].GetScreenPos()));
-                if (expoleDistance > destoryDistanc)
-                {
-                    continue;
-                }
-                allButterfly[i].Destory();
-            }
         }
     }
 }

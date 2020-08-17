@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 public class Flock : MonoBehaviour
 {
     public float speed = 1f;
@@ -20,12 +20,13 @@ public class Flock : MonoBehaviour
 
     private Camera mCamera;
 
+    private float size = 0.04f;
     public void Start()
     {
         mCamera = Camera.main;
     }
 
-    public void Init(GlobalFlock gf, int index)
+    public void Init(GlobalFlock gf, int index, float size)
     {
         GlobalFlock = gf;
         createIndex = index;
@@ -49,6 +50,8 @@ public class Flock : MonoBehaviour
                         -GlobalFlock.areaSize);
             this.isReset = true;
             Invoke("BeginTrigger", 1.0f);
+            this.transform.localScale = Vector3.zero;
+            this.transform.DOScale(Vector3.one * size, 1.0f);
         }
 
         this.gameObject.SetActive(true);
