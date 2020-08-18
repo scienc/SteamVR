@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
+using System.IO;
 
 [RequireComponent(typeof(Image))]
 public class UGUISpriteAnimation : MonoBehaviour
@@ -12,12 +13,13 @@ public class UGUISpriteAnimation : MonoBehaviour
     private float mDelta = 0;
 
     public float FPS = 5;
-    public List<Sprite> SpriteFrames;
+    public List<Sprite> SpriteFrames = new List<Sprite>();
     public bool IsPlaying = false;
     public bool Foward = true;
     public bool AutoPlay = false;
     public bool Loop = false;
 
+    public string spriteFilePath = "";
     public int FrameCount
     {
         get
@@ -135,5 +137,36 @@ public class UGUISpriteAnimation : MonoBehaviour
         mCurFrame = 0;
         SetSprite(mCurFrame);
         Play();
+    }
+
+    [ContextMenu("getImage")]
+    public void getCarImage()
+    {
+        SpriteFrames.Clear();
+        string path = Application.dataPath + "/Resources/" + spriteFilePath;
+        if (Directory.Exists(path))
+        {
+            //获取文件信息
+            DirectoryInfo direction = new DirectoryInfo(path);
+
+            FileInfo[] files = direction.GetFiles("*", SearchOption.AllDirectories);
+
+            print(files.Length);
+
+            for (int i = 0; i < files.Length; i++)
+            {
+                //过滤掉临时文件
+                if (files[i].Name.EndsWith(".meta"))
+                {
+                    continue;
+                }
+                print(files[i].Extension); //这个是扩展名
+                //获取不带扩展名的文件名
+                string name = Path.GetFileNameWithoutExtension(files[i].ToString());
+                print(name);
+                // FileInfo.Name是返回带扩展名的名字 
+                SpriteFrames.Add((Sprite)Resources.Load(spriteFilePath + "/" + name, typeof(Sprite)));
+            }
+        }
     }
 }
