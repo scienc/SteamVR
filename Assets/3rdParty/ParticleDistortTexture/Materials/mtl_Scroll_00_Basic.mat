@@ -22,7 +22,7 @@ Material:
     - _Distort:
         m_Texture: {fileID: 2800000, guid: b58cfae0f43008942b54b2875a926e5a, type: 3}
         m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 143.42221, y: 143.42221}
+        m_Offset: {x: 163.83151, y: 163.83151}
     - _LavaTex:
         m_Texture: {fileID: 2800000, guid: d3f6b18d152c20e4e8bc3a280e873dc9, type: 3}
         m_Scale: {x: 1, y: 1}
