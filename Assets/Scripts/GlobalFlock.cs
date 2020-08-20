@@ -12,6 +12,7 @@ public class GlobalFlock : MonoBehaviour
     public Flock[] allButterfly;
     //public GameObject goalPosGameobject;
     public Vector3 goalPos = Vector3.zero;
+    public float speedOffset = 2.0f;
 
     private List<int> deadButterList = new List<int>();
     private int deadMin = 1;
@@ -21,7 +22,7 @@ public class GlobalFlock : MonoBehaviour
     {
         deadButterList.Clear();
         allButterfly = new Flock[numButterflies];
-        goalPos = gameObject.transform.position;
+        //goalPos = gameObject.transform.position;
 
         for (int i = 0; i < numButterflies; i++)
         {

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class CoroutineManager {
-
     static CoroutineProvider _provider;
     static CoroutineProvider provider {
         get {
