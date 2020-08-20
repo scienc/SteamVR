@@ -20,6 +20,8 @@ public class Flock : MonoBehaviour {
     private Camera mCamera;
 
     private float size = 0.04f;
+
+    
     public void Start () {
         mCamera = Camera.main;
     }
@@ -68,7 +70,7 @@ public class Flock : MonoBehaviour {
         // }
     }
     public void Destory () {
-        AudioManager.PlaySe("se_get");
+        AudioManager.PlaySe ("se_get");
         PlayDead ();
         if (delegateDestoryFlock != null) {
             delegateDestoryFlock (createIndex);
