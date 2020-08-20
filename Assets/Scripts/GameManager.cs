@@ -63,6 +63,7 @@ public class GameManager : MonoBehaviour {
         if (Input.GetKeyDown (KeyCode.F5)) {
             isShowDropDown = !isShowDropDown;
             EditorObj.SetActive (isShowDropDown);
+            uIManager.AddScore();
         }
 
         if (currentTrack != null && currentTrack != trackTrans.position) {

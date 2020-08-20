@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,7 @@ public class UIManager : MonoBehaviour {
     public GameObject BattleRoot;
     public Text numLbale;
     public Text timeLabel;
+    public UGUISpriteAnimation scoreFx;
 
     public GameObject EndRoot;
     public Text endNumLabel;
@@ -36,6 +38,8 @@ public class UIManager : MonoBehaviour {
 
         this.currentNum = 0;
         this.currentTime = 0;
+        numLbale.text = this.currentNum.ToString ();
+        CancelInvoke ("RefreshTime");
         InvokeRepeating ("RefreshTime", 0, 1);
     }
 
@@ -59,18 +63,30 @@ public class UIManager : MonoBehaviour {
             EndGame ();
             return;
         }
+        if (MaxTime - currentTime <= 5) {
+            AudioManager.PlaySe ("se_countdown");
+            timeLabel.transform.DOPunchScale (Vector3.one * 1.1f, 0.2f);
+        }
         timeLabel.text = (MaxTime - currentTime).ToString ();
         currentTime += 1;
     }
 
     public void AddScore () {
-        currentNum += 1;
-        numLbale.text = currentNum.ToString ();
+        if (!scoreFx.IsPlaying) {
+            scoreFx.animFinsih = () => {
+                scoreFx.gameObject.SetActive (false);
+            };
+            scoreFx.gameObject.SetActive (true);
+            scoreFx.Rewind ();
+        }
         StartCoroutine (waitPlaySE ());
     }
 
     IEnumerator waitPlaySE () {
         yield return new WaitForSeconds (0.2f);
+        currentNum += 1;
+        numLbale.text = currentNum.ToString ();
+        numLbale.transform.DOPunchScale (new Vector3 (0.6f, 0.6f, 0.6f), 0.2f);
         AudioManager.PlaySe ("se_number");
     }
 }
