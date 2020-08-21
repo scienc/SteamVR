@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Valve.VR;
 
-public class GameManager : MonoBehaviour
-{
+public class GameManager : MonoBehaviour {
     public GameObject EditorObj;
     public Dropdown dropdown;
     public InputField inputArea;
@@ -36,61 +35,53 @@ public class GameManager : MonoBehaviour
     public UIManager uIManager;
 
     public GameObject fxRoot;
-    public List<FX> flockDeadList = new List<FX>();
+    public List<FX> flockDeadList = new List<FX> ();
 
-    public void Start()
-    {
-        Screen.SetResolution(768, 768, true);
-        print("**********");
-        dropdown.options.Clear();
-        for (int i = 0; i < (int)SteamVR_TrackedObject.EIndex.Device16 + 1; i++)
-        {
-            Dropdown.OptionData data = new Dropdown.OptionData();
-            data.text = ((SteamVR_TrackedObject.EIndex)i).ToString();
-            dropdown.options.Add(data);
+    public void Start () {
+        Screen.SetResolution (768, 768, true);
+        print ("**********");
+        dropdown.options.Clear ();
+        for (int i = 0; i < (int) SteamVR_TrackedObject.EIndex.Device16 + 1; i++) {
+            Dropdown.OptionData data = new Dropdown.OptionData ();
+            data.text = ((SteamVR_TrackedObject.EIndex) i).ToString ();
+            dropdown.options.Add (data);
         }
         isShowDropDown = false;
-        EditorObj.SetActive(false);
-        AudioManager.PlayBgm("BGM");
-        inputArea.text = globalFlock.areaSize.ToString();
+        EditorObj.SetActive (false);
+        AudioManager.PlayBgm ("BGM");
+        inputArea.text = globalFlock.areaSize.ToString ();
         planeVec3 = planeObj.transform.localPosition;
         canyongVec3 = canyongObj.transform.localPosition;
-        uIManager.RefreshGame();
+        uIManager.RefreshGame ();
     }
 
-    public void ChangeDevice(int value)
-    {
-        trackTrans.GetComponent<SteamVR_TrackedObject>().index = (SteamVR_TrackedObject.EIndex)value;
+    public void ChangeDevice (int value) {
+        trackTrans.GetComponent<SteamVR_TrackedObject> ().index = (SteamVR_TrackedObject.EIndex) value;
     }
 
     private float offsetX = 0.0f;
     private float planeOffsetX = 0.0f;
     private float canyongOffsetX = 0.0f;
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F5))
-        {
+    void Update () {
+        if (Input.GetKeyDown (KeyCode.F5)) {
             isShowDropDown = !isShowDropDown;
-            EditorObj.SetActive(isShowDropDown);
-            uIManager.AddScore();
+            EditorObj.SetActive (isShowDropDown);
+            uIManager.AddScore ();
         }
 
-        // if (Input.GetMouseButtonDown(0))
-        // {
+        // if (Input.GetMouseButtonDown (0)) {
         //     currentTrack = Input.mousePosition;
-        //     touchPos = new Vector2(currentTrack.x, currentTrack.y);
-        //     for (int i = 0; i < globalFlock.allButterfly.Length; i++)
-        //     {
+        //     touchPos = new Vector2 (currentTrack.x, currentTrack.y);
+        //     for (int i = 0; i < globalFlock.allButterfly.Length; i++) {
         //         if (globalFlock.allButterfly[i].isDestory || globalFlock.allButterfly[i].isReset)
         //             continue;
-        //         expoleDistance = Mathf.Abs(Vector2.Distance(touchPos, globalFlock.allButterfly[i].GetScreenPos()));
-        //         if (expoleDistance > destoryDistanc)
-        //         {
+        //         expoleDistance = Mathf.Abs (Vector2.Distance (touchPos, globalFlock.allButterfly[i].GetScreenPos ()));
+        //         if (expoleDistance > destoryDistanc) {
         //             continue;
         //         }
-        //         globalFlock.allButterfly[i].Destory();
-        //         uIManager.AddScore();
-        //         PlayFlockDead(globalFlock.allButterfly[i].transform.localPosition);
+        //         globalFlock.allButterfly[i].Destory ();
+        //         uIManager.AddScore ();
+        //         PlayFlockDead (globalFlock.allButterfly[i].transform.localPosition);
         //     }
         // }
 
@@ -134,34 +125,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ChangeFlockArea()
-    {
-        globalFlock.areaSize = int.Parse(inputArea.text);
+    public void ChangeFlockArea () {
+        globalFlock.areaSize = int.Parse (inputArea.text);
     }
 
-    public void PlayFlockDead(Vector3 pos)
-    {
+    public void PlayFlockDead (Vector3 pos) {
         FX fx = null;
-        for (int i = 0; i < flockDeadList.Count; i++)
-        {
-            if (flockDeadList[i].isPlay)
-            {
+        for (int i = 0; i < flockDeadList.Count; i++) {
+            if (flockDeadList[i].isPlay) {
                 continue;
             }
             fx = flockDeadList[i];
             break;
         }
-        if (fx == null)
-        {
-            GameObject obj = GameObject.Instantiate(Resources.Load("bufferDeadFx") as GameObject);
+        if (fx == null) {
+            GameObject obj = GameObject.Instantiate (Resources.Load ("bufferDeadFx") as GameObject);
             obj.transform.parent = fxRoot.transform;
             obj.transform.localPosition = Vector3.zero;
             obj.transform.localRotation = Quaternion.identity;
             obj.transform.localScale = Vector3.one;
-            fx = obj.GetComponent<FX>();
-            flockDeadList.Add(fx);
+            fx = obj.GetComponent<FX> ();
+            flockDeadList.Add (fx);
         }
-        fx.transform.localPosition = new Vector3(pos.x, pos.y, 0);
-        fx.Play();
+        fx.transform.localPosition = new Vector3 (pos.x, pos.y, -1);
+        fx.Play ();
     }
 }
