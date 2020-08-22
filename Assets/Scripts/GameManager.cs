@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Valve.VR;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
     public GameObject EditorObj;
@@ -105,6 +106,9 @@ public class GameManager : MonoBehaviour {
                     uIManager.AddScore();
                     PlayFlockDead(globalFlock.allButterfly[i].transform.localPosition);
                 }
+            }
+            else if(uIManager.currentState == 0 && Mathf.Abs(Vector3.Distance(tempPos,uIManager.beginImage.transform.localPosition))<50){
+                uIManager.BeginGame();
             }
 
             mouseFX.position = currentTrack;

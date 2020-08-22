@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
     public GameObject BeginRoot;
+    public RectTransform beginImage;
     public GameObject BattleRoot;
     public Text numLbale;
     private Sequence numTween;
