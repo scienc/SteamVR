@@ -128,7 +128,8 @@ public class GameManager : MonoBehaviour
             //imageFX.localPosition = new Vector3 (tempPos.x - 384, tempPos.y - 384);
             planeObj.transform.localPosition = new Vector3(planeVec3.x + planeOffsetX, planeVec3.y, planeVec3.z);
             canyongObj.transform.localPosition = new Vector3(canyongVec3.x + canyongOffsetX, canyongVec3.y, canyongVec3.z);
-            if (uIManager.currentState == 0 && Mathf.Abs(Vector3.Distance(new Vector3(tempPos.x - 384, tempPos.y - 384), uIManager.beginImage.transform.localPosition)) < 50)
+            if (uIManager.currentState == 0 
+                && Mathf.Abs(Vector3.Distance(new Vector3(tempPos.x - 384, tempPos.y - 384), new Vector3(uIManager.beginImage.transform.localPosition.x, uIManager.beginImage.transform.localPosition.y))) < 50)
             {
                 uIManager.BeginGame();
             }
