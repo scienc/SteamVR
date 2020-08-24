@@ -18,7 +18,7 @@ public class UIManager : MonoBehaviour {
     public GameObject EndRoot;
     public Text endNumLabel;
 
-    public int currentState = 0; //0:idle,1:begin,2:end
+    public int currentState = 0; //0:idle,1:begin,2:end,3:playbeign
     public int currentNum = 0;
     public int currentTime = 0;
     public int MaxTime = 60;
@@ -122,6 +122,7 @@ public class UIManager : MonoBehaviour {
     }
 
     public void PlayBegin () {
+        currentState = 3;
         Sequence sq = DOTween.Sequence ();
         sq.Append (beginImage.transform.DOScale (Vector3.one * 1.2f, 0.2f));
         sq.Append (beginImage.transform.DOScale (Vector3.one, 0.2f));
