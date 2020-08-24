@@ -66,60 +66,60 @@ public class GameManager : MonoBehaviour {
         if (Input.GetKeyDown (KeyCode.F5)) {
             isShowDropDown = !isShowDropDown;
             EditorObj.SetActive (isShowDropDown);
-            uIManager.AddScore ();
+            uIManager.AddScore (Vector3.zero);
         }
 
-        // if (Input.GetMouseButtonDown (0)) {
-        //     currentTrack = Input.mousePosition;
-        //     touchPos = new Vector2 (currentTrack.x, currentTrack.y);
-        //     for (int i = 0; i < globalFlock.allButterfly.Length; i++) {
-        //         if (globalFlock.allButterfly[i].isDestory || globalFlock.allButterfly[i].isReset)
-        //             continue;
-        //         expoleDistance = Mathf.Abs (Vector2.Distance (touchPos, globalFlock.allButterfly[i].GetScreenPos ()));
-        //         if (expoleDistance > destoryDistanc) {
-        //             continue;
+        if (Input.GetMouseButtonDown (0)) {
+            currentTrack = Input.mousePosition;
+            touchPos = new Vector2 (currentTrack.x, currentTrack.y);
+            for (int i = 0; i < globalFlock.allButterfly.Length; i++) {
+                if (globalFlock.allButterfly[i].isDestory || globalFlock.allButterfly[i].isReset)
+                    continue;
+                expoleDistance = Mathf.Abs (Vector2.Distance (touchPos, globalFlock.allButterfly[i].GetScreenPos ()));
+                if (expoleDistance > destoryDistanc) {
+                    continue;
+                }
+                globalFlock.allButterfly[i].Destory ();
+                uIManager.AddScore (new Vector3 (touchPos.x - 384, touchPos.y - 384));
+                PlayFlockDead (globalFlock.allButterfly[i].transform.localPosition);
+            }
+        }
+
+        // if (currentTrack != null && currentTrack != trackTrans.position) {
+        //     currentTrack = trackTrans.position;
+        //     tempPos = mCamera.WorldToScreenPoint (currentTrack);
+        //     touchPos = new Vector2 (tempPos.x, tempPos.y);
+        //     if (uIManager.currentState == 1) {
+        //         for (int i = 0; i < globalFlock.allButterfly.Length; i++) {
+        //             if (globalFlock.allButterfly[i].isDestory || globalFlock.allButterfly[i].isReset)
+        //                 continue;
+        //             expoleDistance = Mathf.Abs (Vector2.Distance (touchPos, globalFlock.allButterfly[i].GetScreenPos ()));
+        //             if (expoleDistance > destoryDistanc) {
+        //                 continue;
+        //             }
+        //             globalFlock.allButterfly[i].Destory ();
+        //             uIManager.AddScore (new Vector3 (touchPos.x - 384, touchPos.y - 384));
+        //             PlayFlockDead (globalFlock.allButterfly[i].transform.localPosition);
         //         }
-        //         globalFlock.allButterfly[i].Destory ();
-        //         uIManager.AddScore ();
-        //         PlayFlockDead (globalFlock.allButterfly[i].transform.localPosition);
+        //     }
+
+        //     mouseFX.position = currentTrack;
+        //     offsetX = (tempPos.x - 384);
+        //     if (offsetX < 0) {
+        //         planeOffsetX = Mathf.Abs (offsetX / 384 * planeOffsetMax);
+        //         canyongOffsetX = Mathf.Abs (offsetX / 384 * canyongOffsetMax);
+        //     } else {
+        //         planeOffsetX = -Mathf.Abs (offsetX / 384 * planeOffsetMax);
+        //         canyongOffsetX = -Mathf.Abs (offsetX / 384 * canyongOffsetMax);
+        //     }
+        //     //imageFX.localPosition = new Vector3 (tempPos.x - 384, tempPos.y - 384);
+        //     planeObj.transform.localPosition = new Vector3 (planeVec3.x + planeOffsetX, planeVec3.y, planeVec3.z);
+        //     canyongObj.transform.localPosition = new Vector3 (canyongVec3.x + canyongOffsetX, canyongVec3.y, canyongVec3.z);
+        //     if (uIManager.currentState == 0 &&
+        //         Mathf.Abs (Vector3.Distance (new Vector3 (tempPos.x - 384, tempPos.y - 384), new Vector3 (uIManager.beginImage.transform.localPosition.x, uIManager.beginImage.transform.localPosition.y))) < 50) {
+        //         uIManager.PlayBegin ();
         //     }
         // }
-
-        if (currentTrack != null && currentTrack != trackTrans.position) {
-            currentTrack = trackTrans.position;
-            tempPos = mCamera.WorldToScreenPoint (currentTrack);
-            touchPos = new Vector2 (tempPos.x, tempPos.y);
-            if (uIManager.currentState == 1) {
-                for (int i = 0; i < globalFlock.allButterfly.Length; i++) {
-                    if (globalFlock.allButterfly[i].isDestory || globalFlock.allButterfly[i].isReset)
-                        continue;
-                    expoleDistance = Mathf.Abs (Vector2.Distance (touchPos, globalFlock.allButterfly[i].GetScreenPos ()));
-                    if (expoleDistance > destoryDistanc) {
-                        continue;
-                    }
-                    globalFlock.allButterfly[i].Destory ();
-                    uIManager.AddScore ();
-                    PlayFlockDead (globalFlock.allButterfly[i].transform.localPosition);
-                }
-            }
-
-            mouseFX.position = currentTrack;
-            offsetX = (tempPos.x - 384);
-            if (offsetX < 0) {
-                planeOffsetX = Mathf.Abs (offsetX / 384 * planeOffsetMax);
-                canyongOffsetX = Mathf.Abs (offsetX / 384 * canyongOffsetMax);
-            } else {
-                planeOffsetX = -Mathf.Abs (offsetX / 384 * planeOffsetMax);
-                canyongOffsetX = -Mathf.Abs (offsetX / 384 * canyongOffsetMax);
-            }
-            //imageFX.localPosition = new Vector3 (tempPos.x - 384, tempPos.y - 384);
-            planeObj.transform.localPosition = new Vector3 (planeVec3.x + planeOffsetX, planeVec3.y, planeVec3.z);
-            canyongObj.transform.localPosition = new Vector3 (canyongVec3.x + canyongOffsetX, canyongVec3.y, canyongVec3.z);
-            if (uIManager.currentState == 0 &&
-                Mathf.Abs (Vector3.Distance (new Vector3 (tempPos.x - 384, tempPos.y - 384), new Vector3 (uIManager.beginImage.transform.localPosition.x, uIManager.beginImage.transform.localPosition.y))) < 50) {
-                uIManager.PlayBegin ();
-            }
-        }
     }
 
     public void ChangeFlockArea () {

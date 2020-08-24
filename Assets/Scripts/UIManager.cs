@@ -23,6 +23,10 @@ public class UIManager : MonoBehaviour {
     public int currentTime = 0;
     public int MaxTime = 60;
 
+    public Transform ScoreMoveRoot;
+    public ScoreFxTemplate scoreFxTemplate;
+    public List<ScoreFxTemplate> scoreFxList = new List<ScoreFxTemplate>();
+    
     void Start () {
         timeTween = DOTween.Sequence ();
         numTween = DOTween.Sequence ();
@@ -89,25 +93,47 @@ public class UIManager : MonoBehaviour {
         currentTime += 1;
     }
 
-    public void AddScore () {
-        if (!scoreFx.IsPlaying) {
-            scoreFx.animFinsih = () => {
-                scoreFx.gameObject.SetActive (false);
-            };
-            scoreFx.gameObject.SetActive (true);
-            scoreFx.Rewind ();
+    public void AddScore (Vector3 uiPos) {
+        ScoreFxTemplate template = null;
+        for (int i = 0; i < scoreFxList.Count; i++)
+        {
+            if (scoreFxList[i].isPlay)
+                continue;
+            template = scoreFxList[i];
         }
-        StartCoroutine (waitPlaySE ());
+        if (template == null)
+        {
+            GameObject obj = GameObject.Instantiate(scoreFxTemplate.gameObject) as GameObject;
+            obj.transform.parent = ScoreMoveRoot;
+            obj.transform.localPosition = Vector3.zero;
+            obj.transform.localRotation = Quaternion.identity;
+            obj.transform.localScale = Vector3.one;
+            template = obj.GetComponent<ScoreFxTemplate>();
+            template.isPlay = true;
+            scoreFxList.Add(template);
+        }
+        template.delegateFx = waitPlaySE;
+        template.MoveScore(uiPos, numLbale.transform);
     }
 
-    IEnumerator waitPlaySE () {
-        yield return new WaitForSeconds (0.2f);
+    private void waitPlaySE () {
+        //yield return new WaitForSeconds (0.2f);
+        if (!scoreFx.IsPlaying)
+        {
+            scoreFx.animFinsih = () =>
+            {
+                scoreFx.gameObject.SetActive(false);
+            };
+            scoreFx.gameObject.SetActive(true);
+            scoreFx.Rewind();
+        }
+
         currentNum += 1;
         numLbale.text = currentNum.ToString ();
         numTween.Kill ();
-        numTween.Append (numLbale.transform.DOScale (Vector3.one, 0.2f));
-        numTween.Append (numLbale.transform.DOScale (new Vector3 (0.8f, 0.8f, 0.8f), 0.4f));
-        numLbale.transform.localScale = new Vector3 (0.8f, 0.8f, 0.8f);
+        numTween.Append (numLbale.transform.DOScale (new Vector3 (0.8f, 0.8f, 0.8f), 0.2f));
+        numTween.Append (numLbale.transform.DOScale (new Vector3 (0.5f, 0.5f, 0.5f), 0.4f));
+        numLbale.transform.localScale = new Vector3 (0.5f, 0.5f, 0.5f);
         numTween.PlayForward ();
         AudioManager.PlaySe ("se_number");
     }

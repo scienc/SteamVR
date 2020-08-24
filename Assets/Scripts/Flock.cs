@@ -70,7 +70,7 @@ public class Flock : MonoBehaviour {
         // }
     }
     public void Destory () {
-        AudioManager.PlaySe ("se_get");
+        AudioManager.PlaySe ("create_direction");
         PlayDead ();
         if (delegateDestoryFlock != null) {
             delegateDestoryFlock (createIndex);
