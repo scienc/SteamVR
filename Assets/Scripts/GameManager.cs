@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour
             if (uIManager.currentState == 0 
                 && Mathf.Abs(Vector3.Distance(new Vector3(tempPos.x - 384, tempPos.y - 384), new Vector3(uIManager.beginImage.transform.localPosition.x, uIManager.beginImage.transform.localPosition.y))) < 50)
             {
-                uIManager.BeginGame();
+                uIManager.PlayBegin();
             }
         }
     }
