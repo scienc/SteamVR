@@ -37,10 +37,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _AlphaM: 10
+    - _CullMode: 0
     - _DistortScrollX: 1
     - _DistortScrollY: 1
     - _DistortX: 1.5357143
     - _DistortY: 0.46428567
+    - _DstBlend: 1
     - _ScaleX: -1
     - _ScaleY: -1
     m_Colors:

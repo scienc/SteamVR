@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour {
                     continue;
                 }
                 globalFlock.allButterfly[i].Destory ();
-                uIManager.AddScore (new Vector3 (touchPos.x - 384, touchPos.y - 384));
+                uIManager.AddScore(globalFlock.allButterfly[i].transform.position);
                 PlayFlockDead (globalFlock.allButterfly[i].transform.localPosition);
             }
         }
