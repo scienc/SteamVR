@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour
     public ScoreFxTemplate scoreFxTemplate;
     public List<ScoreFxTemplate> scoreFxList = new List<ScoreFxTemplate>();
 
+
     void Start()
     {
         timeTween = DOTween.Sequence();
