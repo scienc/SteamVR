@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour {
 
     public void Start () {
         Screen.SetResolution (768, 768, true);
-        print ("**********");
+        //print ("**********");
         dropdown.options.Clear ();
         for (int i = 0; i < (int) SteamVR_TrackedObject.EIndex.Device16 + 1; i++) {
             Dropdown.OptionData data = new Dropdown.OptionData ();
@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour {
         }
         isShowDropDown = false;
         EditorObj.SetActive (false);
-        AudioManager.PlayBgm ("BGM");
+        //AudioManager.PlayBgm ("BGM");
         inputArea.text = globalFlock.areaSize.ToString ();
         planeVec3 = planeObj.transform.localPosition;
         canyongVec3 = canyongObj.transform.localPosition;
@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour {
 
     public void ChangeDevice (int value) {
         trackTrans.GetComponent<SteamVR_TrackedObject> ().index = (SteamVR_TrackedObject.EIndex) value;
+
+        //Debug.Log(trackTrans.GetComponent<SteamVR_TrackedObject> ().index);
     }
 
     public void ShowTrackMeshRender(bool value)
@@ -78,6 +80,9 @@ public class GameManager : MonoBehaviour {
     private float offsetX = 0.0f;
     private float planeOffsetX = 0.0f;
     private float canyongOffsetX = 0.0f;
+
+    bool ishide=true;
+
     void Update () {
         if (Input.GetKeyDown (KeyCode.F5)) {
             isShowDropDown = !isShowDropDown;
@@ -90,6 +95,108 @@ public class GameManager : MonoBehaviour {
             Application.Quit();
             return;
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+             ishide=!ishide;
+              TrackRenderModel = TrackRoot.GetComponentsInChildren<MeshRenderer>();
+            if (TrackRenderModel != null && TrackRenderModel.Length > 0)
+            {
+              for (int i = 0; i < TrackRenderModel.Length; i++)
+              {
+                TrackRenderModel[i].enabled = ishide;
+              }
+           }
+           //print(ishide);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            ChangeDevice (0);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            ChangeDevice (1);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            ChangeDevice (2);
+        }     
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            ChangeDevice (3);
+        }     
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            ChangeDevice (4);
+        }                
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            ChangeDevice (5);
+        }     
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            ChangeDevice (6);
+        }     
+        else if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            ChangeDevice (7);
+        }     
+        else if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            ChangeDevice (8);
+        }  
+        else if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            ChangeDevice (9);
+        } 
+        else if (Input.GetKeyDown(KeyCode.Q))
+        {
+            ChangeDevice (10);
+        }
+        else if (Input.GetKeyDown(KeyCode.W))
+        {
+            ChangeDevice (11);
+        }
+         else if (Input.GetKeyDown(KeyCode.E))
+        {
+            ChangeDevice (12);
+        }
+         else if (Input.GetKeyDown(KeyCode.R))
+        {
+            ChangeDevice (13);
+        }
+        else if (Input.GetKeyDown(KeyCode.T))
+        {
+            ChangeDevice (14);
+        }
+         else if (Input.GetKeyDown(KeyCode.Y))
+        {
+            ChangeDevice (15);
+        }   
+         else if (Input.GetKeyDown(KeyCode.U))
+         {
+              ChangeDevice (16);
+         } 
+
+
+         if(Input.GetKeyDown(KeyCode.A))
+         {
+           TrackRoot.transform.eulerAngles=Vector3.zero;
+         }
+         else if(Input.GetKeyDown(KeyCode.S))
+         {
+           TrackRoot.transform.eulerAngles=new Vector3(0,90,0);
+         }  
+         else if(Input.GetKeyDown(KeyCode.D))
+         {
+           TrackRoot.transform.eulerAngles=new Vector3(0,270,0);
+         }  
+         else if(Input.GetKeyDown(KeyCode.F))
+         {
+           TrackRoot.transform.eulerAngles=new Vector3(0,360,0);
+         }       
+
         // if (Input.GetMouseButtonDown (0)) {
         //     currentTrack = Input.mousePosition;
         //     touchPos = new Vector2 (currentTrack.x, currentTrack.y);
